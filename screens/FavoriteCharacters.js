@@ -1,39 +1,27 @@
 import React from 'react';
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {removeFavorite} from './redux/actions';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { useFavCharacter } from './FavCharacterProvider';
 
-const FavoriteCharacters = ({navigation}) => {
-  const favorites = useSelector((state) => state.favorites.characters);
-  const dispatch = useDispatch();
+const FavoriteCharacter = ({ character }) => {
+  const { favorites, addFavorite, removeFavorite } = useFavCharacter();
+  const isFavorited = favorites.some((item) => item.id === character.id);
 
-  const removeFromFavorites = (characterId) => {
-    dispatch(removeFavorite(characterId));
+  const handleFavoriteToggle = () => {
+    if (isFavorited) {
+      removeFavorite(character.id);
+    } else {
+      addFavorite(character);
+    }
   };
-
-  const renderItem = ({item}) => (
-    <View>
-      <Text>{item.name}</Text>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('CharacterDetails', {characterId: item.id})}>
-        <Text>Details</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => removeFromFavorites(item.id)}>
-        <Text>Remove</Text>
-      </TouchableOpacity>
-    </View>
-  );
 
   return (
     <View>
-      <Text>Favorite Characters</Text>
-      <FlatList
-        data={favorites}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-      />
+      <Text>{character.name}</Text>
+      <TouchableOpacity onPress={handleFavoriteToggle}>
+        <Text>{isFavorited ? 'Favorilerden Çıkar' : 'Favorilere Ekle'}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-export default FavoriteCharacters;
+export default FavoriteCharacter;

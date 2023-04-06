@@ -4,13 +4,12 @@ import {View, Text, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
 const EpisodesList = ({navigation}) => {
   // ... useState, useEffect ve diğer fonksiyonlar
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <TouchableOpacity
-      style={styles.itemContainer}
-      onPress={() => navigation.navigate('EpisodeDetails', {episodeId: item.id})}>
-      <Text style={styles.itemText}>{item.name}</Text>
-      <Text style={styles.itemText}>Episode: {item.episode}</Text>
-      <Text style={styles.itemText}>Air Date: {item.air_date}</Text>
+      onPress={() => navigation.navigate('EpisodeDetails', { episodeId: item.id })}
+    >
+      <Image source={{ uri: item.image }} style={{ width: 50, height: 50 }} />
+      <Text>{item.name}</Text>
     </TouchableOpacity>
   );
 
