@@ -11,3 +11,6 @@ Favori karakterlerini görebileceği ekran ayarlanmıştır.
 1. İlk olarak, projeyi klonlayın.
 2. Daha sonra, projenin klasörüne gidin ve şu komutu çalıştırın: ilk önce Expo'yu kurun[	
 npm install -g expo-cli] sonra npm install atın :[npm install] ve sonra çalıştırın: [npm start]
+
+
+GİF: <img src="https://github.com/cgryldrm1247/RickAndMorty/blob/master/RickAndMorty.gif" width="auto">
