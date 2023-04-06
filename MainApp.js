@@ -179,7 +179,7 @@ const MainApp = ({ navigation }) => {
         onPress={() => {
           navigation.navigate('EpisodeDetails', { episodeId: item.id });
         }}>
-        <Text style={{ margin: 20 }}>{item.name}</Text>
+        <Text style={{ margin: 20,color:'white',fontWeight:'bold' }}>{item.name}</Text>
         <Image
           source={require('./assets/HomeScreen.png')}
           style={{ width: 200, height: 200, borderRadius: 10 }}
@@ -190,7 +190,7 @@ const MainApp = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TextInput
+       <TextInput
         value={search}
         onChangeText={setSearch}
         placeholder="Bölüm ara..."
@@ -216,14 +216,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: "#202329",
+
   },
   searchInput: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: 'white',
     borderRadius: 5,
     padding: 8,
     marginTop: 16,
+    fontWeight:'bold',
   },
   list: {
     marginBottom: 16,
