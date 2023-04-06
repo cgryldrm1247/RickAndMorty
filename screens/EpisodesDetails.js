@@ -1,5 +1,191 @@
+// import React, { useEffect, useState } from "react";
+// import { TouchableOpacity, Button, TextInput, StyleSheet } from "react-native";
+// import { ScrollView } from "react-native";
+// import {
+//   View,
+//   Text,
+//   ActivityIndicator,
+//   Image,
+//   SafeAreaView,
+// } from "react-native";
+
+// const EpisodeDetails = ({ route, navigation }) => {
+//   const { episodeId } = route.params;
+//   const [episode, setEpisode] = useState(null);
+//   const [characters, setCharacters] = useState([]);
+//   const [likedCharacters, setLikedCharacters] = useState([]);
+
+//   useEffect(() => {
+//     fetch(`https://rickandmortyapi.com/api/episode/${episodeId}`)
+//       .then((response) => response.json())
+//       .then((data) => {
+//         setEpisode(data);
+//         setCharacters(data.characters);
+//       });
+//   }, [episodeId]);
+
+//   useEffect(() => {
+//     const fetchCharacterImages = async () => {
+//       const characterPromises = characters.map((characterUrl) => {
+//         return fetch(characterUrl).then((response) => response.json());
+//       });
+
+//       const fetchedCharacters = await Promise.all(characterPromises);
+//       setCharacters(fetchedCharacters);
+//     };
+
+//     if (characters.length > 0) {
+//       fetchCharacterImages();
+//     }
+//   }, [characters]);
+
+//   const handleLike = (characterId) => {
+//     if (likedCharacters.includes(characterId)) {
+//       // Karakter zaten beğenildiyse, beğeniyi geri al
+//       setLikedCharacters(likedCharacters.filter((id) => id !== characterId));
+//     } else {
+//       if (likedCharacters.length >= 10) {
+//         alert(
+//           "Favori karakter ekleme sayısını aştınız. Başka bir karakteri favorilerden çıkarmalısınız"
+//         );
+//       } else {
+//         setLikedCharacters([...likedCharacters, characterId]);
+//       }
+//     }
+//   };
+
+//   const showLikedCharacters = () => {
+//     const likedCharacterDetails = characters.filter((character) =>
+//       likedCharacters.includes(character.id)
+//     );
+//     navigation.navigate("LikedCharactersScreen", {
+//       likedCharacters: likedCharacterDetails,
+//     });
+//   };
+
+//   const [searchText, setSearchText] = useState("");
+
+//   const filteredCharacters = characters.filter((character) =>
+//     character.name.toLowerCase().includes(searchText.toLowerCase())
+//   );
+
+//   return (
+//     <SafeAreaView style={styles.container}>
+//       <ScrollView contentContainerStyle={styles.contentContainer}>
+//         <Button
+//           onPress={showLikedCharacters}
+//           title="Beğenilen Karakterleri Gör"
+//         />
+//         <TextInput
+//           style={styles.searchInput}
+//           onChangeText={setSearchText}
+//           value={searchText}
+//           placeholder="Karakter ismi ile ara..."
+//           placeholderTextColor="#999"
+//         />
+//         {episode ? (
+//           <>
+//             <View
+//               style={{
+//                 flex: 1,
+//                 justifyContent: "center",
+//                 alignItems: "center",
+//               }}
+//             >
+//               <Text style={{ color: "white", fontWeight: "bold" }}>
+//                 {" "}
+//                 Bölüm Adı: {episode.name}
+//               </Text>
+//               <Text style={{ color: "white", fontWeight: "bold" }}>
+//                 Sezon,Bölüm: {episode.episode}
+//               </Text>
+//               <Text style={{ color: "white", fontWeight: "bold" }}>
+//                 Tarih: {episode.air_date}
+//               </Text>
+//               <Text style={styles.charactersTitle}>Karakterler:</Text>
+//               {characters.length > 0 ? (
+//                 characters.map((character) => (
+//                   <View style={styles.characterCard} key={character.id}>
+//                     <TouchableOpacity
+//                       onPress={() =>
+//                         navigation.navigate("CharacterDetails", {
+//                           characterId: character?.id,
+//                         })
+//                       }
+//                     >
+//                       <Image
+//                         source={{ uri: character.image }}
+//                         style={styles.characterImage}
+//                       />
+//                     </TouchableOpacity>
+//                     <TouchableOpacity onPress={() => handleLike(character.id)}>
+//                       <Text
+//                         style={[
+//                           styles.likeText,
+//                           {
+//                             fontWeight: likedCharacters.includes(character.id)
+//                               ? "bold"
+//                               : "normal",
+//                           },
+//                         ]}
+//                       >
+//                         👍 Like
+//                       </Text>
+//                     </TouchableOpacity>
+//                   </View>
+//                 ))
+//               ) : (
+//                 <ActivityIndicator color="#FFFFFF" />
+//               )}
+//             </View>
+//           </>
+//         ) : (
+//           <ActivityIndicator color="#FFFFFF" />
+//         )}
+//       </ScrollView>
+//     </SafeAreaView>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#202329",
+//   },
+//   contentContainer: {
+//     padding: 16,
+//   },
+//   charactersTitle: {
+//     fontSize: 20,
+//     fontWeight: "bold",
+//     color: "#FFFFFF",
+//     marginBottom: 16,
+//   },
+//   characterCard: {
+//     backgroundColor: "#39434A",
+//     borderRadius: 5,
+//     padding: 16,
+//     alignItems: "center",
+//     marginBottom: 16,
+//     width: "100%",
+//   },
+//   characterImage: {
+//     width: 250,
+//     height: 200,
+//     borderRadius: 10,
+//     marginBottom: 8,
+//   },
+//   likeText: {
+//     fontSize: 16,
+//     color: "#FFFFFF",
+//     marginBottom: 15,
+//   },
+// });
+
+// export default EpisodeDetails;
+
 import React, { useEffect, useState } from "react";
-import { TouchableOpacity, Button } from "react-native";
+import { TouchableOpacity, Button, StyleSheet, TextInput } from "react-native";
 import { ScrollView } from "react-native";
 import {
   View,
@@ -14,6 +200,7 @@ const EpisodeDetails = ({ route, navigation }) => {
   const [episode, setEpisode] = useState(null);
   const [characters, setCharacters] = useState([]);
   const [likedCharacters, setLikedCharacters] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     fetch(`https://rickandmortyapi.com/api/episode/${episodeId}`)
@@ -41,11 +228,12 @@ const EpisodeDetails = ({ route, navigation }) => {
 
   const handleLike = (characterId) => {
     if (likedCharacters.includes(characterId)) {
-      // Karakter zaten beğenildiyse, beğeniyi geri al
       setLikedCharacters(likedCharacters.filter((id) => id !== characterId));
     } else {
       if (likedCharacters.length >= 10) {
-        alert("Beğeni sayısını aştınız");
+        alert(
+          "Favori karakter ekleme sayısını aştınız. Başka bir karakteri favorilerden çıkarmalısınız"
+        );
       } else {
         setLikedCharacters([...likedCharacters, characterId]);
       }
@@ -61,18 +249,29 @@ const EpisodeDetails = ({ route, navigation }) => {
     });
   };
 
+  const filteredCharacters = characters.filter(
+    (character) =>
+      character.name &&
+      character.name.toLowerCase().includes(searchText.toLowerCase())
+  );
+  
+
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
         <Button
           onPress={showLikedCharacters}
           title="Beğenilen Karakterleri Gör"
         />
+        <TextInput
+          style={styles.searchInput}
+          onChangeText={(text) => setSearchText(text)}
+          value={searchText}
+          placeholder="Karakter adı ara..."
+          placeholderTextColor="#FFFFFF"
+        />
         {episode ? (
           <>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Text style={{ marginBottom: 10 }}>Geri Dön</Text>
-            </TouchableOpacity>
             <View
               style={{
                 flex: 1,
@@ -80,15 +279,20 @@ const EpisodeDetails = ({ route, navigation }) => {
                 alignItems: "center",
               }}
             >
-              <Text>{episode.name}</Text>
-              <Text>Sezon: {episode.season}</Text>
-              <Text>Bölüm: {episode.episode}</Text>
-              <Text>Tarih: {episode.air_date}</Text>
-
-              <Text>Karakterler:</Text>
-              {characters.length > 0 ? (
-                characters.map((character) => (
-                  <View key={character.id}>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                {" "}
+                Bölüm Adı: {episode.name}
+              </Text>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                Sezon,Bölüm: {episode.episode}
+              </Text>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                Tarih: {episode.air_date}
+              </Text>
+              <Text style={styles.charactersTitle}>Karakterler:</Text>
+              {filteredCharacters.length > 0 ? (
+                filteredCharacters.map((character) => (
+                  <View style={styles.characterCard} key={character.id}>
                     <TouchableOpacity
                       onPress={() =>
                         navigation.navigate("CharacterDetails", {
@@ -98,17 +302,19 @@ const EpisodeDetails = ({ route, navigation }) => {
                     >
                       <Image
                         source={{ uri: character.image }}
-                        style={{ width: 150, height: 100 }}
+                        style={styles.characterImage}
                       />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => handleLike(character.id)}>
                       <Text
-                        style={{
-                          marginBottom: 15,
-                          fontWeight: likedCharacters.includes(character.id)
-                            ? "bold"
-                            : "normal",
-                        }}
+                        style={[
+                          styles.likeText,
+                          {
+                            fontWeight: likedCharacters.includes(character.id)
+                              ? "bold"
+                              : "normal",
+                          },
+                        ]}
                       >
                         👍 Like
                       </Text>
@@ -116,16 +322,60 @@ const EpisodeDetails = ({ route, navigation }) => {
                   </View>
                 ))
               ) : (
-                <ActivityIndicator />
+                <ActivityIndicator color="#FFFFFF" />
               )}
             </View>
           </>
         ) : (
-          <ActivityIndicator />
+          <ActivityIndicator color="#FFFFFF" />
         )}
       </ScrollView>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#202329",
+  },
+  contentContainer: {
+    padding: 16,
+  },
+  charactersTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    marginBottom: 16,
+  },
+  characterCard: {
+    backgroundColor: "#39434A",
+    borderRadius: 5,
+    padding: 16,
+    alignItems: "center",
+    marginBottom: 16,
+    width: "100%",
+  },
+  characterImage: {
+    width: 250,
+    height: 200,
+    borderRadius: 10,
+    marginBottom: 8,
+  },
+  likeText: {
+    fontSize: 16,
+    color: "#FFFFFF",
+    marginBottom: 15,
+  },
+  searchInput: {
+    backgroundColor: "#39434A",
+    borderRadius: 5,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    color: "#FFFFFF",
+    marginBottom: 16,
+    width: "100%",
+  },
+});
 
 export default EpisodeDetails;

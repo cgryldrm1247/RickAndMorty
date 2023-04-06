@@ -28,7 +28,7 @@ const Navigation = () => {
       <Stack.Screen
         name="LikedCharactersScreen"
         component={LikedCharactersScreen}
-        options={{ title: 'Karakter Detayları' }}
+        options={{ title: 'Beğendiğin karakterler' }}
       />
     </Stack.Navigator>
   );
