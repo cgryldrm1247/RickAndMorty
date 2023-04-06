@@ -23,7 +23,6 @@ const LikedCharactersScreen = ({ route }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
     container: {
       flexGrow: 1,
